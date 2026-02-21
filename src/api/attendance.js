@@ -1,14 +1,13 @@
-import { apiClient } from './client'
+import axios from 'axios'
+
+const API = import.meta.env.VITE_API_BASE_URL
 
 export function fetchAttendanceRecords(params = {}) {
   const query = new URLSearchParams(params).toString()
   const qs = query ? `?${query}` : ''
-  return apiClient(`/attendance/${qs}`)
+  return axios.get(`${API}/api/attendance/${qs}`)
 }
 
 export function markAttendance(data) {
-  return apiClient('/attendance/', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+  return axios.post(`${API}/api/attendance/`, data)
 }
