@@ -1,22 +1,8 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
+import axios from 'axios'
 
-export async function apiClient(endpoint, options = {}) {
-  const url = `${API_BASE_URL}${endpoint}`
-  const config = {
-    headers: { 'Content-Type': 'application/json', ...options.headers },
-    ...options,
-  }
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
-  const response = await fetch(url, config)
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: 'An unexpected error occurred' }))
-    const err = new Error(error.detail || 'Request failed')
-    err.status = response.status
-    err.data = error
-    throw err
-  }
-
-  if (response.status === 204) return null
-  return response.json()
-}
+export const apiClient = axios.create({
+  baseURL: `${API_BASE_URL}/api`,
+  headers: { 'Content-Type': 'application/json' },
+})
