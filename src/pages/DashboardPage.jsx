@@ -16,7 +16,7 @@ export default function DashboardPage() {
     setLoading(true)
     setError(null)
     fetchDashboard()
-      .then(setData)
+      .then((res) => setData(res.data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
   }

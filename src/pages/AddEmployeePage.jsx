@@ -38,9 +38,10 @@ export default function AddEmployeePage() {
       toast('Employee added successfully!', 'success')
       navigate('/employees')
     } catch (err) {
-      if (err.data && typeof err.data === 'object') {
+      const errorData = err.response?.data || {}
+      if (errorData && typeof errorData === 'object') {
         const serverErrors = {}
-        for (const [key, val] of Object.entries(err.data)) {
+        for (const [key, val] of Object.entries(errorData)) {
           serverErrors[key] = Array.isArray(val) ? val[0] : val
         }
         setErrors(serverErrors)

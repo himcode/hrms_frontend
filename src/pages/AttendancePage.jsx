@@ -33,7 +33,7 @@ export default function AttendancePage() {
 
   useEffect(() => {
     fetchEmployees()
-      .then(setEmployees)
+      .then((res) => setEmployees(res.data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
   }, [])
@@ -44,7 +44,7 @@ export default function AttendancePage() {
     if (filters.employee) params.employee = filters.employee
     if (filters.date) params.date = filters.date
     fetchAttendanceRecords(params)
-      .then(setRecords)
+      .then((res) => setRecords(res.data))
       .catch(() => {})
       .finally(() => setRecordsLoading(false))
   }
@@ -65,9 +65,10 @@ export default function AttendancePage() {
       setForm((prev) => ({ ...prev, employee: '', status: 'Present' }))
       loadRecords()
     } catch (err) {
-      if (err.data) {
-        const msg = err.data.non_field_errors?.[0] || err.data.detail || Object.values(err.data).flat()[0]
-        toast(msg || 'Failed to mark attendance.', 'error')
+      const errorData = err.response?.data || {}
+      if (errorData && typeof errorData === 'object') {
+        const msg = errorData.non_field_errors?.[0] || errorData.detail || Object.values(errorData).flat()[0] || 'Failed to mark attendance.'
+        toast(msg, 'error')
       } else {
         toast(err.message || 'Failed to mark attendance.', 'error')
       }

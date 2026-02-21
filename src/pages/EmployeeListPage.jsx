@@ -27,7 +27,7 @@ export default function EmployeeListPage() {
     setLoading(true)
     setError(null)
     fetchEmployees()
-      .then((data) => setEmployees(data))
+      .then((res) => setEmployees(res.data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
   }

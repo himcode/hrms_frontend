@@ -25,7 +25,7 @@ export default function EmployeeAttendancePage() {
     if (dateFrom) params.date_from = dateFrom
     if (dateTo) params.date_to = dateTo
     fetchEmployeeAttendance(id, params)
-      .then(setData)
+      .then((res) => setData(res.data))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false))
   }
